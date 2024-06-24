@@ -145,6 +145,9 @@ class ApiClient(panasonicsession.PanasonicSession):
                 if key == 'eco' and isinstance(value, constants.EcoMode):
                     parameters['ecoMode'] = value.value
 
+                if key == 'ecoFunctionData':
+                    parameters['ecoFunctionData'] = value.value
+
                 if key == 'nanoe' and \
                         isinstance(value, constants.NanoeMode) and \
                         value != constants.NanoeMode.Unavailable:
@@ -231,6 +234,9 @@ class ApiClient(panasonicsession.PanasonicSession):
 
         if 'ecoMode' in parameters:
             value['eco'] = constants.EcoMode(parameters['ecoMode'])
+
+        if 'ecoFunctionData' in parameters:
+            value['ecoFunctionData'] = constants.ecoFunctionData(parameters['ecoFunctionData'])
 
         if 'nanoe' in parameters:
             value['nanoe'] = constants.NanoeMode(parameters['nanoe'])

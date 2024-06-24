@@ -2,7 +2,7 @@
 from homeassistant.const import CONF_ICON, CONF_NAME, CONF_TYPE
 from homeassistant.components.climate.const import (
     HVACMode, ClimateEntityFeature,
-    PRESET_ECO, PRESET_NONE, PRESET_BOOST)
+    PRESET_ECO, PRESET_NONE, PRESET_BOOST, PRESET_SLEEP)
 
 ATTR_TARGET_TEMPERATURE = "target_temperature"
 ATTR_INSIDE_TEMPERATURE = "inside_temperature"
@@ -67,7 +67,8 @@ SUPPORT_FLAGS = (
 PRESET_LIST = {
     PRESET_NONE: 'Auto',
     PRESET_BOOST: 'Powerful',
-    PRESET_ECO: 'Quiet'
+    PRESET_SLEEP: 'Quiet',
+    PRESET_ECO: 'Eco'
 }
 
 OPERATION_LIST = {
