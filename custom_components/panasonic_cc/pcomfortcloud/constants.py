@@ -39,6 +39,11 @@ class EcoMode(Enum):
     Quiet = 2
 
 
+class ecoFunctionData(Enum):
+    Unavailable = 0
+    Off = 1
+    On = 2
+
 class AirSwingAutoMode(Enum):
     Disabled = 1
     Both = 0

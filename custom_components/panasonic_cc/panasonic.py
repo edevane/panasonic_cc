@@ -90,6 +90,8 @@ class PanasonicApiDevice:
                 self.features = data.get('features', None)
 
             plst = data.get('parameters')
+            eco_mode = plst.get('eco').name
+            eco_function = plst.get('ecoFunctionData').name
             self._is_on = bool(plst.get('power').value)
             if plst.get('temperatureInside') != 126:
                 self._inside_temperature = plst.get('temperatureInside')
@@ -103,8 +105,12 @@ class PanasonicApiDevice:
             self._swing_mode = plst.get('airSwingVertical').name
             self._swing_lr_mode = plst.get('airSwingHorizontal').name
             self._hvac_mode = plst.get('mode').name
-            self._eco_mode = plst.get('eco').name
             self._nanoe_mode = plst.get('nanoe', None)
+
+            if eco_function == 'On':
+                self._eco_mode = "Eco"
+            else:
+                self._eco_mode = eco_mode
 
         except Exception as e:
             _LOGGER.debug("Failed to set data for device {id}".format(**self.device))
@@ -246,11 +252,18 @@ class PanasonicApiDevice:
     async def set_preset_mode(self, preset_mode: str) -> None:
         """Set new preset mode."""
         _LOGGER.debug("Set %s ecomode %s", self.name, preset_mode)
-        await self.set_device(
-            { 
-                "power": self.constants.Power.On,
-                "eco": self.constants.EcoMode[ PRESET_LIST[preset_mode] ]
-            })
+        if preset_mode == "eco":
+            await self.set_device(
+                {
+                    "power": self.constants.Power.On,
+                    "ecoFunctionData": self.constants.ecoFunctionData.On
+                })
+        else:
+            await self.set_device(
+                {
+                    "power": self.constants.Power.On,
+                    "eco": self.constants.EcoMode[PRESET_LIST[preset_mode]]
+                })
         await self.do_update()
 
     async def set_temperature(self, **kwargs):

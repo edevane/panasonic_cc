@@ -48,7 +48,9 @@ class PanasonicNanoeSwitch(ToggleEntity):
     @property
     def is_on(self):
         """Return the state of the sensor."""
-        return self._api.nanoe_mode == self._api.constants.NanoeMode.On
+        state = ((self._api.nanoe_mode == self._api.constants.NanoeMode.On) |
+                 (self._api.nanoe_mode == self._api.constants.NanoeMode.All))
+        return state
 
     @property
     def device_info(self):
@@ -61,7 +63,7 @@ class PanasonicNanoeSwitch(ToggleEntity):
 
     async def async_turn_on(self, **kwargs):
         """Turn on nanoe."""
-        await self._api.set_nanoe_mode(self._api.constants.NanoeMode.On.name)
+        await self._api.set_nanoe_mode(self._api.constants.NanoeMode.All.name)
 
     async def async_turn_off(self, **kwargs):
         """Turn off nanoe."""
